@@ -4,17 +4,17 @@ module Crud
     require 'bcrypt'
     puts "Module Crud activated"
 
-    def self.create_hash_digest(password) 
+    def create_hash_digest(password) 
         BCrypt::Password.create(password)
     end
 
     #verification method:
-    def self.verify_hash_digest(password)
+    def verify_hash_digest(password)
         BCrypt::Password.new(password)
     end
 
     #create safe passwords for each user:
-    def self.create_secure_users(list_of_users)
+    def create_secure_users(list_of_users)
         list_of_users.each do |user_record|
             user_record[:password] = create_hash_digest(user_record[:password])
         end
@@ -22,7 +22,7 @@ module Crud
     end
 
 
-    def self.authenticate_user(username, password, list_of_users)
+    def authenticate_user(username, password, list_of_users)
         list_of_users.each do |user_record|
         
             if user_record[:username] == username && verify_hash_digest(user_record[:password]) == password
@@ -33,5 +33,6 @@ module Crud
     end
 end
 
-#Instead of Crud.whatever I could use self.whatever
-#That is how you reference class methods
+#Instead of Crud.whatever I could use self.whatever: That is how you reference class methods
+
+#To use as instance methods, I need to delete self/crud from the names of the methods
