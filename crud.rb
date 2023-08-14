@@ -1,44 +1,37 @@
-require 'bcrypt'
+#This is how you convert this to a module:
+module Crud 
 
-users=[
-    {username: "marilyn", password:"password1"},
-    {username: "jack", password:"password2"},
-    {username: "arya", password:"password3"},
-    {username: "jon", password:"password4"},
-    {username: "heisenberg", password:"password5"},
-    {username: "arwen", password:"password6"},
-]
+    require 'bcrypt'
+    puts "Module Crud activated"
 
-def create_hash_digest(password) 
-    BCrypt::Password.create(password)
-end
-
-#verification method:
-def verify_hash_digest(password)
-    BCrypt::Password.new(password)
-end
-
-#create safe passwords for each user:
-def create_sercure_users(list_of_users)
-    list_of_users.each do |user_record|
-        user_record[:password] = create_hash_digest(user_record[:password])
+    def self.create_hash_digest(password) 
+        BCrypt::Password.create(password)
     end
-    list_of_users
-end
 
-new_users =  create_sercure_users(users)
-puts new_users
+    #verification method:
+    def self.verify_hash_digest(password)
+        BCrypt::Password.new(password)
+    end
 
-def authenticate_user(username, password, list_of_users)
-    list_of_users.each do |user_record|
-    
-        if user_record[:username] == username && verify_hash_digest(user_record[:password]) == password
-            return user_record
+    #create safe passwords for each user:
+    def self.create_secure_users(list_of_users)
+        list_of_users.each do |user_record|
+            user_record[:password] = create_hash_digest(user_record[:password])
         end
-    end 
-    "Credentials were incorrect"
-end
-# new_password = create_hash_digest("password1")
-# puts new_password == "password1"
+        list_of_users
+    end
 
-p authenticate_user("heisenberg", "password5", new_users)
+
+    def self.authenticate_user(username, password, list_of_users)
+        list_of_users.each do |user_record|
+        
+            if user_record[:username] == username && verify_hash_digest(user_record[:password]) == password
+                return user_record
+            end
+        end 
+        "Credentials were incorrect"
+    end
+end
+
+#Instead of Crud.whatever I could use self.whatever
+#That is how you reference class methods
